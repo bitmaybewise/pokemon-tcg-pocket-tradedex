@@ -2,9 +2,25 @@
   "name": "pokemon-tcg-pocket-tradedex",
   "version": "0.0.0",
   "description": "Web app to facilitate trading Pokémon TCG Pocket cards",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "15.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.3.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "15.3.1"
   },
   "author": "@bitmaybewise",
   "license": "ISC"
