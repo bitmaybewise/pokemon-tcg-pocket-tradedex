@@ -1,13 +1,8 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Press_Start_2P } from 'next/font/google';
+import 'nes.css/css/nes.min.css';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: 'Pokémon TCG Pocket TradeDex',
-  description: 'Web app to facilitate trading Pokémon TCG Pocket cards',
-};
+const pressStart2P = Press_Start_2P({ weight: '400', subsets: ['latin'] });
 
 export default function RootLayout({
   children,
@@ -16,7 +11,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={pressStart2P.className}>{children}</body>
     </html>
   );
 } 

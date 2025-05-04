@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+  }
+}
+
+/* NES.css customizations */
+.nes-container {
+  @apply bg-white;
+}
+
+.nes-btn {
+  @apply cursor-pointer;
+}
+
+/* Custom classes */
+.font-press-start {
+  font-family: 'Press Start 2P', system-ui, sans-serif;
+} 
