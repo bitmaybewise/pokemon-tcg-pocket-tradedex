@@ -3,10 +3,12 @@
 import { Card } from "@/types/card";
 import cards from "@/../v4.json";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCollection } from "@/contexts/CollectionContext";
 import { useState, useMemo } from "react";
 
 export default function Home() {
-  const { user, loading, signIn, signUp, logout } = useAuth();
+  const { user, loading: authLoading, signIn, signUp, logout } = useAuth();
+  const { cardQuantities, incrementCardQuantity, decrementCardQuantity, loading: collectionLoading } = useCollection();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
@@ -53,7 +55,7 @@ export default function Home() {
     }
   };
 
-  if (loading) {
+  if (authLoading || collectionLoading) {
     return (
       <main>
         <div className="nes-container with-title is-centered" style={{ marginBottom: 32 }}>
@@ -200,6 +202,36 @@ export default function Home() {
               <p>Pack: {card.pack}</p>
               {card.ex === "Yes" && <p style={{ color: "#e53e3e" }}>EX Card</p>}
               <p style={{ fontSize: 12, marginTop: 8 }}>Artist: {card.artist}</p>
+              {user && (
+                <div style={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  gap: 8,
+                  marginTop: 8 
+                }}>
+                  <button
+                    className="nes-btn is-error"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      decrementCardQuantity(card.id);
+                    }}
+                    disabled={!cardQuantities[card.id]}
+                  >
+                    -
+                  </button>
+                  <span>Quantity: {cardQuantities[card.id] || 0}</span>
+                  <button
+                    className="nes-btn is-success"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      incrementCardQuantity(card.id);
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}

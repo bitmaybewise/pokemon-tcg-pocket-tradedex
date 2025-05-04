@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Rules for owned_cards collection
+    match /owned_cards/{user_card_id} {
+      // Allow read if user is authenticated
+      allow read: if isAuthenticated();
+      
+      // Allow create if user owns the document being created
+      allow create: if isOwner(request.resource.data.userId);
+      
+      // Allow update/delete if user owns the existing document
+      allow update, delete: if isOwner(resource.data.userId);
+    }
+  }
+} 
