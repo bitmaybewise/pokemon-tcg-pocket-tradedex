@@ -55,8 +55,8 @@ export default function Home() {
 
   if (loading) {
     return (
-      <main className="min-h-screen p-8">
-        <div className="nes-container with-title is-centered">
+      <main>
+        <div className="nes-container with-title is-centered" style={{ marginBottom: 32 }}>
           <p className="title">Loading</p>
           <p>Please wait...</p>
         </div>
@@ -65,12 +65,12 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen p-8">
-      <div className="nes-container with-title is-centered mb-8">
+    <main>
+      <div className="nes-container with-title is-centered" style={{ marginBottom: 32 }}>
         {user ? (
           <>
             <h1 className="text-2xl">Welcome back, {user.email}!</h1>
-            <div className="mt-8">
+            <div style={{ marginTop: 32 }}>
               <button
                 type="button"
                 className="nes-btn is-error"
@@ -83,32 +83,30 @@ export default function Home() {
         ) : (
           <>
             <h1 className="text-2xl">Hello, Pokémon trainer!</h1>
-            <form onSubmit={handleSubmit} className="grid grid-cols-5 mt-8">
-              <div className="nes-field mb-4">
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexWrap: "wrap", gap: 16, marginTop: 32, alignItems: "flex-end", justifyContent: "center" }}>
+              <div className="nes-field" style={{ minWidth: 220, flex: 1 }}>
                 <label htmlFor="email">Email:</label>
                 <input
-                  type="email"
                   id="email"
                   className="nes-input"
+                  required
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
-              <div className="nes-field mb-4">
+              <div className="nes-field" style={{ minWidth: 220, flex: 1 }}>
                 <label htmlFor="password">Password:</label>
                 <input
-                  type="password"
                   id="password"
                   className="nes-input"
+                  required
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </div>
-              {error && <p className="text-red-500 mb-4">{error}</p>}
-              <div className="flex gap-4">
-                <label htmlFor="submit"></label>
+              <div style={{ display: "flex", gap: 8 }}>
                 <button type="submit" className="nes-btn is-primary">
                   {isSignUp ? "Sign Up" : "Sign In"}
                 </button>
@@ -120,15 +118,16 @@ export default function Home() {
                   {isSignUp ? "Already have an account?" : "Need an account?"}
                 </button>
               </div>
+              {error && <p style={{ color: "#e53e3e", width: "100%" }}>{error}</p>}
             </form>
           </>
         )}
       </div>
 
-      <h2 className="grid grid-cols-5 gap-4 nes-container text-3xl font-bold text-center mb-8">
+      <h2 className="nes-container with-title" style={{ fontSize: 28, textAlign: "center", marginBottom: 32 }}>
         Pokémon TCG Pocket Cards
       </h2>
-      <div className="grid grid-cols-5 gap-4 nes-container is-centered">
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 32, alignItems: "flex-end", justifyContent: "center" }}>
         <div className="nes-field">
           <label htmlFor="filter-name">Name</label>
           <input
@@ -140,52 +139,67 @@ export default function Home() {
             placeholder="Search by name"
           />
         </div>
-        <div className="nes-select">
+        
+        <div className="nes-field">
           <label htmlFor="filter-rarity">Rarity</label>
-          <select
-            id="filter-rarity"
-            value={filterRarity}
-            onChange={(e) => setFilterRarity(e.target.value)}
-          >
-            <option value="">All</option>
-            {rarities.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
+          <div className="nes-select">
+            <select
+              id="filter-rarity"
+              value={filterRarity}
+              onChange={(e) => setFilterRarity(e.target.value)}
+            >
+              <option value="">All</option>
+              {rarities.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="nes-select">
+        
+        <div className="nes-field">
           <label htmlFor="filter-pack">Pack</label>
-          <select
-            id="filter-pack"
-            value={filterPack}
-            onChange={(e) => setFilterPack(e.target.value)}
-          >
-            <option value="">All</option>
-            {packs.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
-            ))}
-          </select>
+          <div className="nes-select">
+            <select
+              id="filter-pack"
+              value={filterPack}
+              onChange={(e) => setFilterPack(e.target.value)}
+            >
+              <option value="">All</option>
+              {packs.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-5 gap-4 nes-container is-centered with-title">
+      <div style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 16,
+        justifyContent: "center"
+      }}>
         {filteredCards.map((card) => (
-          <div key={card.id}>
+          <div
+            key={card.id}
+            className="nes-container with-title is-centered"
+            style={{ width: 260, marginBottom: 16 }}
+          >
             <p className="title">{card.name}</p>
             <img
               src={card.image}
               alt={card.name}
-              className="w-full h-auto mb-2"
+              style={{ width: "100%", height: "auto", marginBottom: 8 }}
             />
-            <div className="text-sm">
+            <div style={{ fontSize: 14 }}>
               <p>Health: {card.health}</p>
               <p>Rarity: {card.rarity}</p>
               <p>Pack: {card.pack}</p>
-              {card.ex === "Yes" && <p className="text-red-500">EX Card</p>}
-              <p className="text-xs mt-2">Artist: {card.artist}</p>
+              {card.ex === "Yes" && <p style={{ color: "#e53e3e" }}>EX Card</p>}
+              <p style={{ fontSize: 12, marginTop: 8 }}>Artist: {card.artist}</p>
             </div>
           </div>
         ))}
