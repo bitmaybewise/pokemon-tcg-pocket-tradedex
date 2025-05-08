@@ -10,7 +10,7 @@ import styles from "./page.module.css";
 
 export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();
-  const { profile, loading: profileLoading, updateProfile } = useProfile();
+  const { profile, loading: profileLoading, updateProfile, getProfileByFriendId } = useProfile();
   const { cardQuantities, loading: collectionLoading } = useCollection();
   const [friendId, setFriendId] = useState("");
   const [nickname, setNickname] = useState("");
@@ -59,6 +59,13 @@ export default function ProfilePage() {
 
     if (!validateFriendId(friendId)) {
       setError("Friend ID must be in the format 9999-9999-9999-9999");
+      return;
+    }
+
+    // Check uniqueness
+    const existingProfile = await getProfileByFriendId(friendId);
+    if (existingProfile && existingProfile.userId !== profile?.userId) {
+      setError("This Friend ID is already in use by another user.");
       return;
     }
 
