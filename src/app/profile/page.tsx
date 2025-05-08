@@ -15,6 +15,7 @@ export default function ProfilePage() {
   const [friendId, setFriendId] = useState("");
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export default function ProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess(false);
 
     if (!validateFriendId(friendId)) {
       setError("Friend ID must be in the format 9999-9999-9999-9999");
@@ -62,6 +64,10 @@ export default function ProfilePage() {
 
     try {
       await updateProfile(friendId, nickname);
+      setSuccess(true);
+      setTimeout(() => {
+        router.push(`/profile/${friendId}`);
+      }, 1200);
     } catch (error: any) {
       setError(error.message);
     }
@@ -112,6 +118,9 @@ export default function ProfilePage() {
           <button type="submit" className="nes-btn is-primary">
             Save Profile
           </button>
+          {success && (
+            <p className="nes-text is-success">Profile saved! Redirecting…</p>
+          )}
           {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>
