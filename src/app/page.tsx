@@ -5,6 +5,7 @@ import cards from "@/../v4.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCollection } from "@/contexts/CollectionContext";
 import { useState, useMemo } from "react";
+import styles from "./page.module.css";
 
 export default function Home() {
   const { user, loading: authLoading, signIn, signUp, logout } = useAuth();
@@ -58,7 +59,7 @@ export default function Home() {
   if (authLoading || collectionLoading) {
     return (
       <main>
-        <div className="nes-container with-title is-centered" style={{ marginBottom: 32 }}>
+        <div className="nes-container with-title is-centered">
           <p className="title">Loading</p>
           <p>Please wait...</p>
         </div>
@@ -68,11 +69,11 @@ export default function Home() {
 
   return (
     <main>
-      <div className="nes-container with-title is-centered" style={{ marginBottom: 32 }}>
+      <div className="nes-container with-title is-centered">
         {user ? (
           <>
             <h1 className="text-2xl">Welcome back, {user.email}!</h1>
-            <div style={{ marginTop: 32 }}>
+            <div>
               <button
                 type="button"
                 className="nes-btn is-error"
@@ -85,8 +86,8 @@ export default function Home() {
         ) : (
           <>
             <h1 className="text-2xl">Hello, Pokémon trainer!</h1>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexWrap: "wrap", gap: 16, marginTop: 32, alignItems: "flex-end", justifyContent: "center" }}>
-              <div className="nes-field" style={{ minWidth: 220, flex: 1 }}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <div className={`nes-field ${styles.formField}`}>
                 <label htmlFor="email">Email:</label>
                 <input
                   id="email"
@@ -97,7 +98,7 @@ export default function Home() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="nes-field" style={{ minWidth: 220, flex: 1 }}>
+              <div className={`nes-field ${styles.formField}`}>
                 <label htmlFor="password">Password:</label>
                 <input
                   id="password"
@@ -108,7 +109,7 @@ export default function Home() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className={styles.formButtons}>
                 <button type="submit" className="nes-btn is-primary">
                   {isSignUp ? "Sign Up" : "Sign In"}
                 </button>
@@ -120,17 +121,17 @@ export default function Home() {
                   {isSignUp ? "Already have an account?" : "Need an account?"}
                 </button>
               </div>
-              {error && <p style={{ color: "#e53e3e", width: "100%" }}>{error}</p>}
+              {error && <p className={styles.error}>{error}</p>}
             </form>
           </>
         )}
       </div>
 
-      <h2 className="nes-container with-title" style={{ fontSize: 28, textAlign: "center", marginBottom: 32 }}>
+      <h2 className="nes-container with-title">
         Pokémon TCG Pocket Cards
       </h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 32, alignItems: "flex-end", justifyContent: "center" }}>
-        <div className="nes-field">
+      <div className={styles.filters}>
+        <div className={`nes-field ${styles.filterField}`}>
           <label htmlFor="filter-name">Name</label>
           <input
             id="filter-name"
@@ -142,7 +143,7 @@ export default function Home() {
           />
         </div>
         
-        <div className="nes-field">
+        <div className={`nes-field ${styles.filterField}`}>
           <label htmlFor="filter-rarity">Rarity</label>
           <div className="nes-select">
             <select
@@ -160,7 +161,7 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="nes-field">
+        <div className={`nes-field ${styles.filterField}`}>
           <label htmlFor="filter-pack">Pack</label>
           <div className="nes-select">
             <select
@@ -178,38 +179,26 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 16,
-        justifyContent: "center"
-      }}>
+      <div className={styles.cardGrid}>
         {filteredCards.map((card) => (
           <div
             key={card.id}
-            className="nes-container with-title is-centered"
-            style={{ width: 260, marginBottom: 16 }}
+            className={`nes-container with-title is-centered ${styles.card}`}
           >
             <p className="title">{card.name}</p>
             <img
               src={card.image}
               alt={card.name}
-              style={{ width: "100%", height: "auto", marginBottom: 8 }}
+              className={styles.cardImage}
             />
-            <div style={{ fontSize: 14 }}>
+            <div className={styles.cardInfo}>
               <p>Health: {card.health}</p>
               <p>Rarity: {card.rarity}</p>
               <p>Pack: {card.pack}</p>
-              {card.ex === "Yes" && <p style={{ color: "#e53e3e" }}>EX Card</p>}
-              <p style={{ fontSize: 12, marginTop: 8 }}>Artist: {card.artist}</p>
+              {card.ex === "Yes" && <p className={styles.exCard}>EX Card</p>}
+              <p className={styles.artist}>Artist: {card.artist}</p>
               {user && (
-                <div style={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center", 
-                  gap: 8,
-                  marginTop: 8 
-                }}>
+                <div className={styles.quantityControls}>
                   <button
                     className="nes-btn is-error"
                     onClick={(e) => {

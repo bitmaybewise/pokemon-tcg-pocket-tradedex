@@ -1,0 +1,79 @@
+.container {
+  margin-bottom: 32px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.formField {
+  min-width: 220px;
+  flex: 1;
+}
+
+.formButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.error {
+  color: #e53e3e;
+  width: 100%;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.filterField {
+  width: 30%;
+}
+
+.cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.card {
+  width: 260px;
+  margin-bottom: 16px;
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.cardInfo {
+  font-size: 14px;
+}
+
+.exCard {
+  color: #e53e3e;
+}
+
+.artist {
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+} 
