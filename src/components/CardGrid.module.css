@@ -1,0 +1,38 @@
+.cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.card {
+  width: 260px;
+  margin-bottom: 16px;
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.cardInfo {
+  font-size: 14px;
+}
+
+.exCard {
+  color: #e53e3e;
+}
+
+.artist {
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+} 
