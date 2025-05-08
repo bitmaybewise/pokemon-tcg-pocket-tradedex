@@ -115,14 +115,6 @@ export default function ProfilePage() {
           {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>
-
-      <div className="nes-container with-title">
-        <p className="title">Your Collection</p>
-        <div className={styles.stats}>
-          <p>Total Cards: {Object.keys(cardQuantities).length}</p>
-          <p>Total Quantity: {Object.values(cardQuantities).reduce((a, b) => a + b, 0)}</p>
-        </div>
-      </div>
     </main>
   );
 } 
