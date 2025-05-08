@@ -119,4 +119,28 @@ export function CollectionProvider({ children }: { children: React.ReactNode }) 
       {children}
     </CollectionContext.Provider>
   );
+}
+
+export async function getCollectionByFriendId(friendId: string): Promise<Record<string, number>> {
+  try {
+    // 1. Lookup userId by friendId
+    const profilesRef = collection(db, 'profiles');
+    const q = query(profilesRef, where('friendId', '==', friendId));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) return {};
+    const userId = querySnapshot.docs[0].data().userId;
+
+    // 2. Fetch owned_cards for that userId
+    const ownedCardsRef = collection(db, 'owned_cards');
+    const cardsQuery = query(ownedCardsRef, where('userId', '==', userId));
+    const cardsSnapshot = await getDocs(cardsQuery);
+    const quantities: Record<string, number> = {};
+    cardsSnapshot.forEach((doc) => {
+      quantities[doc.data().cardId] = doc.data().quantity;
+    });
+    return quantities;
+  } catch (error) {
+    console.error('Error fetching collection by friendId:', error);
+    return {};
+  }
 } 

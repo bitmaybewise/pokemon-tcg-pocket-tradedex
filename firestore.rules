@@ -14,7 +14,7 @@ service cloud.firestore {
     // Rules for owned_cards collection
     match /owned_cards/{user_card_id} {
       // Allow read if user is authenticated
-      allow read: if isAuthenticated();
+      allow read;
       
       // Allow create if user owns the document being created
       allow create: if isOwner(request.resource.data.userId);

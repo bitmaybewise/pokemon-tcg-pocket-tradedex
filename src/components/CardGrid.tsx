@@ -1,5 +1,6 @@
 import { Card } from "@/types/card";
 import { useCollection } from "@/contexts/CollectionContext";
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./CardGrid.module.css";
 
 interface CardGridProps {
@@ -8,6 +9,7 @@ interface CardGridProps {
 
 export default function CardGrid({ cards }: CardGridProps) {
   const { cardQuantities, incrementCardQuantity, decrementCardQuantity } = useCollection();
+  const { user } = useAuth();
 
   return (
     <div className={styles.cardGrid}>
@@ -28,28 +30,30 @@ export default function CardGrid({ cards }: CardGridProps) {
             <p>Pack: {card.pack}</p>
             {card.ex === "Yes" && <p className={styles.exCard}>EX Card</p>}
             <p className={styles.artist}>Artist: {card.artist}</p>
-            <div className={styles.quantityControls}>
-              <button
-                className="nes-btn is-error"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  decrementCardQuantity(card.id);
-                }}
-                disabled={!cardQuantities[card.id]}
-              >
-                -
-              </button>
-              <span>Quantity: {cardQuantities[card.id] || 0}</span>
-              <button
-                className="nes-btn is-success"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  incrementCardQuantity(card.id);
-                }}
-              >
-                +
-              </button>
-            </div>
+            {user && (
+              <div className={styles.quantityControls}>
+                <button
+                  className="nes-btn is-error"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    decrementCardQuantity(card.id);
+                  }}
+                  disabled={!cardQuantities[card.id]}
+                >
+                  -
+                </button>
+                <span>Quantity: {cardQuantities[card.id] || 0}</span>
+                <button
+                  className="nes-btn is-success"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    incrementCardQuantity(card.id);
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ))}

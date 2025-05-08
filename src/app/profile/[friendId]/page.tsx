@@ -3,18 +3,20 @@
 import { Card } from "@/types/card";
 import cards from "@/../v4.json";
 import { useProfile } from "@/contexts/ProfileContext";
-import { useCollection } from "@/contexts/CollectionContext";
+import { getCollectionByFriendId } from "@/contexts/CollectionContext";
 import { useState, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./page.module.css";
 import CardGrid from "@/components/CardGrid";
 import FilterBar from "@/components/FilterBar";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function PublicProfilePage() {
   const { friendId } = useParams();
   const { getProfileByFriendId } = useProfile();
-  const { cardQuantities, loading: collectionLoading } = useCollection();
+  const [cardQuantities, setCardQuantities] = useState<Record<string, number>>({});
+  const [collectionLoading, setCollectionLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -47,12 +49,17 @@ export default function PublicProfilePage() {
     });
   }, [filterName, filterRarity, filterPack, cardQuantities]);
 
+  const { user } = useAuth();
+
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileAndCollection = async () => {
       try {
         const profileData = await getProfileByFriendId(friendId as string);
         if (profileData) {
           setProfile(profileData);
+          // Fetch collection for this user
+          const quantities = await getCollectionByFriendId(friendId as string);
+          setCardQuantities(quantities);
         } else {
           setError("Profile not found");
         }
@@ -60,10 +67,10 @@ export default function PublicProfilePage() {
         setError(error.message);
       } finally {
         setLoading(false);
+        setCollectionLoading(false);
       }
     };
-
-    fetchProfile();
+    fetchProfileAndCollection();
   }, [friendId, getProfileByFriendId]);
 
   if (loading || collectionLoading) {
@@ -103,14 +110,15 @@ export default function PublicProfilePage() {
         </div>
         <div className={styles.stats}>
           <p>Friend ID: {profile?.friendId}</p>
-          <a href="/profile" className={`nes-btn ${styles.smallButton}`}>
-            Edit Profile
-          </a>
+          {user && (
+            <a href="/profile" className={`nes-btn ${styles.smallButton}`}>
+              Edit Profile
+            </a>
+          )}
         </div>
       </div>
 
-      <div className="nes-container with-title">
-        <p className="title">Your Collection</p>
+      <div className="nes-container">
         <div className={styles.stats}>
           <p>Total Cards: {Object.keys(cardQuantities).filter(id => cardQuantities[id] > 0).length}</p>
           <p>Total Quantity: {Object.values(cardQuantities).reduce((a, b) => a + b, 0)}</p>
