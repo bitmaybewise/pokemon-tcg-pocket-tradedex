@@ -73,6 +73,17 @@ export default function PublicProfilePage() {
     fetchProfileAndCollection();
   }, [friendId, getProfileByFriendId]);
 
+  // Compare With handler
+  const handleCompare = () => {
+    const otherFriendId = window.prompt("Enter the Friend ID to compare with:");
+    if (!otherFriendId) return;
+    if (!profile?.friendId) {
+      alert("You must have a profile with a Friend ID to use compare.");
+      return;
+    }
+    window.location.href = `/compare/${profile.friendId}/${otherFriendId}`;
+  };
+
   if (loading || collectionLoading) {
     return (
       <main>
@@ -113,6 +124,15 @@ export default function PublicProfilePage() {
           {user && (
             <a href="/profile" className={`nes-btn ${styles.smallButton}`}>
               Edit Profile
+            </a>
+          )}
+          {user && profile?.friendId && (
+            <a
+              href="/compare/start"
+              className={`nes-btn ${styles.smallButton}`}
+              style={{ marginTop: 8 }}
+            >
+              Compare With a Friend
             </a>
           )}
         </div>
