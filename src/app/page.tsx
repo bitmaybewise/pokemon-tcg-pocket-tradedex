@@ -81,9 +81,15 @@ export default function Home() {
             </h1>
             <div className={styles.form}>
               <div className={styles.buttonGroup}>
-                <a href={`/profile/${profile?.friendId}`} className="nes-btn">
-                  View Profile
-                </a>
+                {profile ? (
+                  <a href={`/profile/${profile.friendId}`} className="nes-btn">
+                    View Profile
+                  </a>
+                ) : (
+                  <a href="/profile" className="nes-btn is-primary">
+                    Edit Profile
+                  </a>
+                )}
                 <button
                   type="button"
                   className="nes-btn is-error"
