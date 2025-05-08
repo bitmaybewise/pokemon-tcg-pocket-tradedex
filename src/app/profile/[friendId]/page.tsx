@@ -98,9 +98,12 @@ export default function PublicProfilePage() {
 
       <div className="nes-container with-title is-centered">
         <p className="title">{profile?.nickname || 'Unknown Trainer'}'s Collection</p>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+          <i className="nes-ash"></i>
+        </div>
         <div className={styles.stats}>
           <p>Friend ID: {profile?.friendId}</p>
-          <a href="/profile" className="nes-btn">
+          <a href="/profile" className={`nes-btn ${styles.smallButton}`}>
             Edit Profile
           </a>
           <p>Total Cards: {Object.keys(cardQuantities).length}</p>

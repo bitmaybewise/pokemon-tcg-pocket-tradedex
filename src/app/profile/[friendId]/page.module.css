@@ -10,4 +10,15 @@
   gap: 8px;
   margin-top: 16px;
   text-align: center;
+}
+
+.smallButton {
+  font-size: 0.9rem;
+  padding: 0.25em 1em;
+  min-width: unset;
+  width: auto;
+  max-width: 200px;
+  margin: 0 auto;
+  display: inline-block;
+  margin-bottom: 20px;
 } 
