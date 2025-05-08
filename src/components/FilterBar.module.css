@@ -1,0 +1,12 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.filterField {
+  width: 30%;
+} 
