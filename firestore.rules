@@ -22,5 +22,14 @@ service cloud.firestore {
       // Allow update/delete if user owns the existing document
       allow update, delete: if isOwner(resource.data.userId);
     }
+
+    // Rules for profiles collection
+    match /profiles/{userId} {
+      // Allow public read access
+      allow read: if true;
+      
+      // Allow create/update if user owns the document
+      allow create, update: if isOwner(userId);
+    }
   }
 } 

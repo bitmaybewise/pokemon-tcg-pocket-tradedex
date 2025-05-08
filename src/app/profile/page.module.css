@@ -1,0 +1,25 @@
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.error {
+  color: #e53e3e;
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16px;
+  font-size: 1.2em;
+} 

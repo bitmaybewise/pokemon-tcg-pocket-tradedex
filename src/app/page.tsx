@@ -3,12 +3,14 @@
 import { Card } from "@/types/card";
 import cards from "@/../v4.json";
 import { useAuth } from "@/contexts/AuthContext";
+import { useProfile } from "@/contexts/ProfileContext";
 import { useCollection } from "@/contexts/CollectionContext";
 import { useState, useMemo } from "react";
 import styles from "./page.module.css";
 
 export default function Home() {
   const { user, loading: authLoading, signIn, signUp, logout } = useAuth();
+  const { profile, loading: profileLoading } = useProfile();
   const { cardQuantities, incrementCardQuantity, decrementCardQuantity, loading: collectionLoading } = useCollection();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,7 +58,7 @@ export default function Home() {
     }
   };
 
-  if (authLoading || collectionLoading) {
+  if (authLoading || profileLoading || collectionLoading) {
     return (
       <main>
         <div className="nes-container with-title is-centered">
@@ -72,15 +74,22 @@ export default function Home() {
       <div className="nes-container with-title is-centered">
         {user ? (
           <>
-            <h1 className="text-2xl">Welcome back, {user.email}!</h1>
-            <div>
-              <button
-                type="button"
-                className="nes-btn is-error"
-                onClick={logout}
-              >
-                Sign Out
-              </button>
+            <h1 className="text-2xl">
+              Welcome back, {profile?.nickname || user.email}!
+            </h1>
+            <div className={styles.form}>
+              <div className={styles.buttonGroup}>
+                <a href={`/profile/${profile?.friendId}`} className="nes-btn">
+                  View Profile
+                </a>
+                <button
+                  type="button"
+                  className="nes-btn is-error"
+                  onClick={logout}
+                >
+                  Sign Out
+                </button>
+              </div>
             </div>
           </>
         ) : (
