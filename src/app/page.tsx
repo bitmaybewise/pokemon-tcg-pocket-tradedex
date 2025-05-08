@@ -157,7 +157,7 @@ export default function Home() {
         rarities={rarities}
         packs={packs}
       />
-      <CardGrid cards={filteredCards} />
+      <CardGrid cards={filteredCards} filterPack={filterPack} />
     </main>
   );
 }
