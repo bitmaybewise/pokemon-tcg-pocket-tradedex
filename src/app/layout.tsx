@@ -4,8 +4,15 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CollectionProvider } from "@/contexts/CollectionContext";
 import { ProfileProvider } from "@/contexts/ProfileContext";
+import { Metadata } from "next";
 
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export default function RootLayout({
   children,
