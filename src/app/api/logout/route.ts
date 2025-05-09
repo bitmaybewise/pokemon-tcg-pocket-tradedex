@@ -1,7 +1,11 @@
-import { withAuth } from 'next-firebase-auth';
+import { NextResponse } from "next/server";
 
-const handler = withAuth()((req, res) => {
-  res.status(200).json({ success: true });
-});
+export const runtime = "edge";
 
-export default handler; 
+export async function GET() {
+  return NextResponse.json({ success: true });
+}
+
+export async function POST() {
+  return NextResponse.json({ success: true });
+}

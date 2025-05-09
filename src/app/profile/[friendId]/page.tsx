@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Card } from "@/types/card";
 import cards from "@/../v4.json";
@@ -15,7 +15,9 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function PublicProfilePage() {
   const { friendId } = useParams();
   const { getProfileByFriendId } = useProfile();
-  const [cardQuantities, setCardQuantities] = useState<Record<string, number>>({});
+  const [cardQuantities, setCardQuantities] = useState<Record<string, number>>(
+    {}
+  );
   const [collectionLoading, setCollectionLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -115,33 +117,46 @@ export default function PublicProfilePage() {
       </div>
 
       <div className="nes-container with-title is-centered">
-        <p className="title">{profile?.nickname || 'Who\'s That Pokémon Trainer?'}</p>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+        <p className="title">
+          {profile?.nickname || "Who's That Pokémon Trainer?"}
+        </p>
+        <div
+          style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}
+        >
           <i className="nes-ash"></i>
         </div>
         <div className={styles.stats}>
           <p>Friend ID: {profile?.friendId}</p>
           {user && (
-            <a href="/profile" className={`nes-btn ${styles.smallButton}`}>
+            <Link href="/profile" className={`nes-btn ${styles.smallButton}`}>
               Edit Profile
-            </a>
+            </Link>
           )}
           {user && profile?.friendId && (
-            <a
+            <Link
               href="/compare/start"
               className={`nes-btn ${styles.smallButton}`}
               style={{ marginTop: 8 }}
             >
               Compare With a Friend
-            </a>
+            </Link>
           )}
         </div>
       </div>
 
       <div className="nes-container">
         <div className={styles.stats}>
-          <p>Total Cards: {Object.keys(cardQuantities).filter(id => cardQuantities[id] > 0).length}</p>
-          <p>Total Quantity: {Object.values(cardQuantities).reduce((a, b) => a + b, 0)}</p>
+          <p>
+            Total Cards:{" "}
+            {
+              Object.keys(cardQuantities).filter((id) => cardQuantities[id] > 0)
+                .length
+            }
+          </p>
+          <p>
+            Total Quantity:{" "}
+            {Object.values(cardQuantities).reduce((a, b) => a + b, 0)}
+          </p>
         </div>
       </div>
 
@@ -155,8 +170,8 @@ export default function PublicProfilePage() {
         rarities={rarities}
         packs={packs}
       />
-      
+
       <CardGrid cards={filteredCards} />
     </main>
   );
-} 
+}

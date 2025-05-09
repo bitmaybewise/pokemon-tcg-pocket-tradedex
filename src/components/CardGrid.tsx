@@ -2,6 +2,7 @@ import { Card } from "@/types/card";
 import { useCollection } from "@/contexts/CollectionContext";
 import { useAuth } from "@/contexts/AuthContext";
 import styles from "./CardGrid.module.css";
+import Image from "next/image";
 
 interface CardGridProps {
   cards: Card[];
@@ -9,7 +10,8 @@ interface CardGridProps {
 }
 
 export default function CardGrid({ cards, filterPack }: CardGridProps) {
-  const { cardQuantities, incrementCardQuantity, decrementCardQuantity } = useCollection();
+  const { cardQuantities, incrementCardQuantity, decrementCardQuantity } =
+    useCollection();
   const { user } = useAuth();
 
   // Add all filtered cards at once
@@ -37,11 +39,16 @@ export default function CardGrid({ cards, filterPack }: CardGridProps) {
             className={`nes-container with-title is-centered ${styles.card}`}
           >
             <p className="title">{card.name}</p>
-            <img
-              src={card.image}
-              alt={card.name}
-              className={styles.cardImage}
-            />
+            <div className={styles.imageWrapper}>
+              <Image
+                src={card.image}
+                alt={card.name}
+                className={styles.cardImage}
+                width={200}
+                height={280}
+                unoptimized
+              />
+            </div>
             <div className={styles.cardInfo}>
               <p>Health: {card.health}</p>
               <p>Rarity: {card.rarity}</p>
@@ -78,4 +85,4 @@ export default function CardGrid({ cards, filterPack }: CardGridProps) {
       </div>
     </div>
   );
-} 
+}

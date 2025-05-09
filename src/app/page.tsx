@@ -9,11 +9,17 @@ import { useState, useMemo } from "react";
 import styles from "./page.module.css";
 import CardGrid from "@/components/CardGrid";
 import FilterBar from "@/components/FilterBar";
+import Link from "next/link";
 
 export default function Home() {
   const { user, loading: authLoading, signIn, signUp, logout } = useAuth();
   const { profile, loading: profileLoading } = useProfile();
-  const { cardQuantities, incrementCardQuantity, decrementCardQuantity, loading: collectionLoading } = useCollection();
+  const {
+    cardQuantities,
+    incrementCardQuantity,
+    decrementCardQuantity,
+    loading: collectionLoading,
+  } = useCollection();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
@@ -82,13 +88,16 @@ export default function Home() {
             <div className={styles.form}>
               <div className={styles.buttonGroup}>
                 {profile ? (
-                  <a href={`/profile/${profile.friendId}`} className="nes-btn">
+                  <Link
+                    href={`/profile/${profile.friendId}`}
+                    className="nes-btn"
+                  >
                     View Profile
-                  </a>
+                  </Link>
                 ) : (
-                  <a href="/profile" className="nes-btn is-primary">
+                  <Link href="/profile" className="nes-btn is-primary">
                     Edit Profile
-                  </a>
+                  </Link>
                 )}
                 <button
                   type="button"
@@ -144,9 +153,7 @@ export default function Home() {
         )}
       </div>
 
-      <h2 className="nes-container with-title">
-        Pokémon TCG Pocket Cards
-      </h2>
+      <h2 className="nes-container with-title">Pokémon TCG Pocket Cards</h2>
       <FilterBar
         filterName={filterName}
         setFilterName={setFilterName}
