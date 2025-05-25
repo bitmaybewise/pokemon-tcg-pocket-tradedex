@@ -21,6 +21,7 @@ export default function ComparePage() {
   const [filterName, setFilterName] = useState("");
   const [filterRarity, setFilterRarity] = useState("");
   const [filterPack, setFilterPack] = useState("");
+  const [showOnlyUnique, setShowOnlyUnique] = useState(true);
 
   // Get unique rarities and packs for dropdowns
   const rarities = useMemo(
@@ -52,8 +53,12 @@ export default function ComparePage() {
           getProfileByFriendId(friendId1 as string),
           getProfileByFriendId(friendId2 as string),
         ]);
-        setUser1Name(profile1?.nickname || friendId1 as string || "User 1 Only");
-        setUser2Name(profile2?.nickname || friendId2 as string || "User 2 Only");
+        setUser1Name(
+          profile1?.nickname || (friendId1 as string) || "User 1 Only"
+        );
+        setUser2Name(
+          profile2?.nickname || (friendId2 as string) || "User 2 Only"
+        );
       } catch (err: any) {
         setError("Error fetching collections");
       } finally {
@@ -66,34 +71,67 @@ export default function ComparePage() {
   // Unique cards for each user
   const user1Only = useMemo(() => {
     return (cards as Card[]).filter(
-      (card) => (collection1[card.id] > 0) && (!collection2[card.id] || collection2[card.id] === 0)
+      (card) =>
+        collection1[card.id] > 0 &&
+        (!collection2[card.id] || collection2[card.id] === 0)
     );
   }, [collection1, collection2]);
 
   const user2Only = useMemo(() => {
     return (cards as Card[]).filter(
-      (card) => (collection2[card.id] > 0) && (!collection1[card.id] || collection1[card.id] === 0)
+      (card) =>
+        collection2[card.id] > 0 &&
+        (!collection1[card.id] || collection1[card.id] === 0)
     );
   }, [collection1, collection2]);
 
+  // All cards for each user
+  const user1All = useMemo(() => {
+    return (cards as Card[]).filter((card) => collection1[card.id] > 0);
+  }, [collection1]);
+
+  const user2All = useMemo(() => {
+    return (cards as Card[]).filter((card) => collection2[card.id] > 0);
+  }, [collection2]);
+
   // Apply filters
   const filteredUser1Only = useMemo(() => {
-    return user1Only.filter((card) => {
-      const matchesName = card.name.toLowerCase().includes(filterName.toLowerCase());
+    const cardsToFilter = showOnlyUnique ? user1Only : user1All;
+    return cardsToFilter.filter((card) => {
+      const matchesName = card.name
+        .toLowerCase()
+        .includes(filterName.toLowerCase());
       const matchesRarity = filterRarity ? card.rarity === filterRarity : true;
       const matchesPack = filterPack ? card.pack === filterPack : true;
       return matchesName && matchesRarity && matchesPack;
     });
-  }, [user1Only, filterName, filterRarity, filterPack]);
+  }, [
+    user1Only,
+    user1All,
+    showOnlyUnique,
+    filterName,
+    filterRarity,
+    filterPack,
+  ]);
 
   const filteredUser2Only = useMemo(() => {
-    return user2Only.filter((card) => {
-      const matchesName = card.name.toLowerCase().includes(filterName.toLowerCase());
+    const cardsToFilter = showOnlyUnique ? user2Only : user2All;
+    return cardsToFilter.filter((card) => {
+      const matchesName = card.name
+        .toLowerCase()
+        .includes(filterName.toLowerCase());
       const matchesRarity = filterRarity ? card.rarity === filterRarity : true;
       const matchesPack = filterPack ? card.pack === filterPack : true;
       return matchesName && matchesRarity && matchesPack;
     });
-  }, [user2Only, filterName, filterRarity, filterPack]);
+  }, [
+    user2Only,
+    user2All,
+    showOnlyUnique,
+    filterName,
+    filterRarity,
+    filterPack,
+  ]);
 
   // Group by rarity
   function groupByRarity(cards: Card[]): Record<string, Card[]> {
@@ -138,6 +176,25 @@ export default function ComparePage() {
       </div>
       <div className="nes-container with-title is-centered">
         <p className="title">Compare Collections</p>
+        <div
+          style={{
+            marginTop: 16,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <label>
+            <input
+              type="checkbox"
+              className="nes-checkbox"
+              checked={showOnlyUnique}
+              onChange={(e) => setShowOnlyUnique(e.target.checked)}
+            />
+            <span>Show only cards not owned by each other</span>
+          </label>
+        </div>
       </div>
       <FilterBar
         filterName={filterName}
@@ -149,7 +206,12 @@ export default function ComparePage() {
         rarities={rarities}
         packs={packs}
       />
-      <CompareCardGrid left={left} right={right} user1Name={user1Name} user2Name={user2Name} />
+      <CompareCardGrid
+        left={left}
+        right={right}
+        user1Name={user1Name}
+        user2Name={user2Name}
+      />
     </main>
   );
-} 
+}
