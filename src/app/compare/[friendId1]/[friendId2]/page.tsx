@@ -22,6 +22,7 @@ export default function ComparePage() {
   const [filterRarity, setFilterRarity] = useState("");
   const [filterPack, setFilterPack] = useState("");
   const [showOnlyUnique, setShowOnlyUnique] = useState(true);
+  const [showOnlyMultiple, setShowOnlyMultiple] = useState(false);
 
   // Get unique rarities and packs for dropdowns
   const rarities = useMemo(
@@ -94,9 +95,31 @@ export default function ComparePage() {
     return (cards as Card[]).filter((card) => collection2[card.id] > 0);
   }, [collection2]);
 
+  // Cards with quantity > 1 for each user
+  const user1Multiple = useMemo(() => {
+    return (cards as Card[]).filter((card) => collection1[card.id] > 1);
+  }, [collection1]);
+
+  const user2Multiple = useMemo(() => {
+    return (cards as Card[]).filter((card) => collection2[card.id] > 1);
+  }, [collection2]);
+
   // Apply filters
   const filteredUser1Only = useMemo(() => {
-    const cardsToFilter = showOnlyUnique ? user1Only : user1All;
+    let cardsToFilter = user1All;
+
+    if (showOnlyUnique) {
+      cardsToFilter = cardsToFilter.filter(
+        (card) =>
+          collection1[card.id] > 0 &&
+          (!collection2[card.id] || collection2[card.id] === 0)
+      );
+    }
+
+    if (showOnlyMultiple) {
+      cardsToFilter = cardsToFilter.filter((card) => collection1[card.id] > 1);
+    }
+
     return cardsToFilter.filter((card) => {
       const matchesName = card.name
         .toLowerCase()
@@ -106,16 +129,31 @@ export default function ComparePage() {
       return matchesName && matchesRarity && matchesPack;
     });
   }, [
-    user1Only,
     user1All,
+    collection1,
+    collection2,
     showOnlyUnique,
+    showOnlyMultiple,
     filterName,
     filterRarity,
     filterPack,
   ]);
 
   const filteredUser2Only = useMemo(() => {
-    const cardsToFilter = showOnlyUnique ? user2Only : user2All;
+    let cardsToFilter = user2All;
+
+    if (showOnlyUnique) {
+      cardsToFilter = cardsToFilter.filter(
+        (card) =>
+          collection2[card.id] > 0 &&
+          (!collection1[card.id] || collection1[card.id] === 0)
+      );
+    }
+
+    if (showOnlyMultiple) {
+      cardsToFilter = cardsToFilter.filter((card) => collection2[card.id] > 1);
+    }
+
     return cardsToFilter.filter((card) => {
       const matchesName = card.name
         .toLowerCase()
@@ -125,9 +163,11 @@ export default function ComparePage() {
       return matchesName && matchesRarity && matchesPack;
     });
   }, [
-    user2Only,
     user2All,
+    collection1,
+    collection2,
     showOnlyUnique,
+    showOnlyMultiple,
     filterName,
     filterRarity,
     filterPack,
@@ -180,6 +220,7 @@ export default function ComparePage() {
           style={{
             marginTop: 16,
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             gap: 8,
@@ -193,6 +234,15 @@ export default function ComparePage() {
               onChange={(e) => setShowOnlyUnique(e.target.checked)}
             />
             <span>Show only cards not owned by each other</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              className="nes-checkbox"
+              checked={showOnlyMultiple}
+              onChange={(e) => setShowOnlyMultiple(e.target.checked)}
+            />
+            <span>Show only cards with quantity greater than 1</span>
           </label>
         </div>
       </div>
