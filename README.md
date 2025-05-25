@@ -6,15 +6,23 @@ The cards are provided by https://github.com/chase-manning/pokemon-tcg-pocket-ca
 
 ## Development
 
-How to prepare localhost for development:
+How to prepare localhost for development?
+
+This project is built using [Google Firebase](https://firebase.google.com/) (Authentication and Firestore Database).
+
+The emulators can be used for local development, but a dedicated project is recommended to simulate the environment it is deployed.
+
+Copy the sample and fill the environment variable file with your Google Firebase project credentials:
 
 ```shell
 $ cp .env.local.sample .env.local
 ```
 
-Fill the environment variables with your Google Firebase project credentials.
+Install [mise](https://mise.jdx.dev/).
 
 ```shell
+$ mise install
+
 $ npm install
 
 $ npm install -g firebase-tools
