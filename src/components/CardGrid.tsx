@@ -52,7 +52,7 @@ export default function CardGrid({ cards, filterPack }: CardGridProps) {
             <div className={styles.cardInfo}>
               <p>Health: {card.health}</p>
               <p>Rarity: {card.rarity}</p>
-              <p>Pack: {card.pack}</p>
+              <p>Pack: {card.pack} <p># {card.id.slice(-3)}</p></p>
               {card.ex === "Yes" && <p className={styles.exCard}>EX Card</p>}
               <p className={styles.artist}>Artist: {card.artist}</p>
               {user && (

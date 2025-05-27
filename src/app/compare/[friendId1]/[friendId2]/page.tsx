@@ -121,12 +121,18 @@ export default function ComparePage() {
     }
 
     return cardsToFilter.filter((card) => {
+      // Get the last three digits of the card ID for searching
+      const cardIdDigits = card.id.slice(-3);
+      
+      // Match if the name contains the search term OR if the last three digits match the search term
       const matchesName = card.name
         .toLowerCase()
         .includes(filterName.toLowerCase());
+      const matchesIdDigits = filterName.trim() !== "" && cardIdDigits.includes(filterName.trim());
       const matchesRarity = filterRarity ? card.rarity === filterRarity : true;
       const matchesPack = filterPack ? card.pack === filterPack : true;
-      return matchesName && matchesRarity && matchesPack;
+      
+      return (matchesName || matchesIdDigits) && matchesRarity && matchesPack;
     });
   }, [
     user1All,
@@ -155,12 +161,18 @@ export default function ComparePage() {
     }
 
     return cardsToFilter.filter((card) => {
+      // Get the last three digits of the card ID for searching
+      const cardIdDigits = card.id.slice(-3);
+      
+      // Match if the name contains the search term OR if the last three digits match the search term
       const matchesName = card.name
         .toLowerCase()
         .includes(filterName.toLowerCase());
+      const matchesIdDigits = filterName.trim() !== "" && cardIdDigits.includes(filterName.trim());
       const matchesRarity = filterRarity ? card.rarity === filterRarity : true;
       const matchesPack = filterPack ? card.pack === filterPack : true;
-      return matchesName && matchesRarity && matchesPack;
+      
+      return (matchesName || matchesIdDigits) && matchesRarity && matchesPack;
     });
   }, [
     user2All,
