@@ -25,14 +25,14 @@ export default function FilterBar({
   return (
     <div className={styles.filters}>
       <div className={`nes-field ${styles.filterField}`}>
-        <label htmlFor="filter-name">Name</label>
+        <label htmlFor="filter-name">Filter</label>
         <input
           id="filter-name"
           className="nes-input"
           type="text"
           value={filterName}
           onChange={(e) => setFilterName(e.target.value)}
-          placeholder="Search by name"
+          placeholder="Search by name or #"
         />
       </div>
       
