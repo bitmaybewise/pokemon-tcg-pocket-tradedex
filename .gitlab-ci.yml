@@ -9,6 +9,8 @@ include:
 check-cards-job:
   stage: test
   image: node:22-alpine
+  rules:
+    - if: $CHECK_CARDS == "1"
   script:
     - cp v4.json v4.json.bak
     - npm run update-cards
