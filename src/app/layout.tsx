@@ -27,6 +27,18 @@ export default function RootLayout({
             <CollectionProvider>{children}</CollectionProvider>
           </ProfileProvider>
         </AuthProvider>
+        <footer
+          style={{
+            textAlign: "center",
+            fontSize: 12,
+            margin: "32px 0 8px 0",
+            color: "#888",
+          }}
+        >
+          This site uses cookies for session management. You can delete your
+          profile and all associated data at any time from your profile page.
+          This complies with GDPR requirements.
+        </footer>
       </body>
     </html>
   );
