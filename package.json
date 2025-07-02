@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-cards": "node update-cards.js"
+    "update-cards": "node update-cards.js",
+    "update-firebase-rules": "firebase deploy --only firestore:rules"
   },
   "dependencies": {
     "firebase": "^11.6.1",

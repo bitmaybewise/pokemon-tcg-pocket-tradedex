@@ -22,4 +22,11 @@
   justify-content: space-around;
   margin-top: 16px;
   font-size: 1.2em;
-} 
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 8px;
+}
