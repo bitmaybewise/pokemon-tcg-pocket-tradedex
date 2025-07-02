@@ -5,20 +5,20 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
     // Helper function to check if user owns the document
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
-    
+
     // Rules for owned_cards collection
     match /owned_cards/{user_card_id} {
       // Allow read if user is authenticated
       allow read;
-      
+
       // Allow create if user owns the document being created
       allow create: if isOwner(request.resource.data.userId);
-      
+
       // Allow update/delete if user owns the existing document
       allow update, delete: if isOwner(resource.data.userId);
     }
@@ -27,9 +27,9 @@ service cloud.firestore {
     match /profiles/{userId} {
       // Allow public read access
       allow read: if true;
-      
-      // Allow create/update if user owns the document
-      allow create, update: if isOwner(userId);
+
+      // Allow create/update/delete if user owns the document
+      allow create, update, delete: if isOwner(userId);
     }
   }
-} 
+}

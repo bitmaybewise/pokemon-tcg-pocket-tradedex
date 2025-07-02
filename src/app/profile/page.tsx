@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/contexts/ProfileContext";
@@ -9,8 +9,14 @@ import Link from "next/link";
 import styles from "./page.module.css";
 
 export default function ProfilePage() {
-  const { user, loading: authLoading } = useAuth();
-  const { profile, loading: profileLoading, updateProfile, getProfileByFriendId } = useProfile();
+  const { user, loading: authLoading, logout, deleteUserAccount } = useAuth();
+  const {
+    profile,
+    loading: profileLoading,
+    updateProfile,
+    getProfileByFriendId,
+    deleteProfile,
+  } = useProfile();
   const { cardQuantities, loading: collectionLoading } = useCollection();
   const [friendId, setFriendId] = useState("");
   const [nickname, setNickname] = useState("");
@@ -37,13 +43,13 @@ export default function ProfilePage() {
   }
 
   if (!user) {
-    router.push('/');
+    router.push("/");
     return null;
   }
 
   const handleFriendIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '');
-    const formatted = value.replace(/(\d{4})(?=\d)/g, '$1-');
+    const value = e.target.value.replace(/\D/g, "");
+    const formatted = value.replace(/(\d{4})(?=\d)/g, "$1-");
     setFriendId(formatted);
   };
 
@@ -75,6 +81,23 @@ export default function ProfilePage() {
       setTimeout(() => {
         router.push(`/profile/${friendId}`);
       }, 1200);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const handleDeleteProfile = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete your profile? This action cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await deleteProfile();
+      await deleteUserAccount();
+      await logout();
+      router.push("/");
     } catch (error: any) {
       setError(error.message);
     }
@@ -122,9 +145,20 @@ export default function ProfilePage() {
               required
             />
           </div>
-          <button type="submit" className="nes-btn is-primary">
-            Save Profile
-          </button>
+          <div className={styles.buttonGroup}>
+            <button type="submit" className="nes-btn is-primary">
+              Save Profile
+            </button>
+            {profile && (
+              <button
+                type="button"
+                className="nes-btn is-error"
+                onClick={handleDeleteProfile}
+              >
+                Delete Profile
+              </button>
+            )}
+          </div>
           {success && (
             <p className="nes-text is-success">Profile saved! Redirecting…</p>
           )}
@@ -133,4 +167,4 @@ export default function ProfilePage() {
       </div>
     </main>
   );
-} 
+}
